@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MiniNetflix Responsive</title>
+
+<!-- Video.js CSS -->
+<link href="https://vjs.zencdn.net/8.5.2/video-js.css" rel="stylesheet" />
+
+<style>
+  /* Reset base */
+  * {
+    box-sizing: border-box;
+  }
+
+  body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #121212;
+    color: #e5e5e5;
+    height: 100vh;
+    display: flex;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  #sidebar {
+    width: 220px;
+    background-color: #1f1f1f;
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    transition: width 0.3s ease;
+  }
+
+  #sidebar h2 {
+    color: #e50914;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 700;
+    font-size: 1.8rem;
+    user-select: none;
+  }
+
+  .menu-item {
+    padding: 15px 20px;
+    cursor: pointer;
+    user-select: none;
+    border-left: 5px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .menu-item:hover {
+    background-color: #333;
+  }
+  .menu-item.active {
+    background-color: #333;
+    border-left: 5px solid #e50914;
+    font-weight: 700;
+  }
+
+  /* Icone semplici per menu */
+  .menu-icon {
+    font-size: 1.2rem;
+    width: 20px;
+    text-align: center;
+  }
+
+  /* Contenuto */
+  #content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+  }
+
+  header {
+    background: #000;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    user-select: none;
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #e50914;
+  }
+
+  header button {
+    background: #e50914;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  header button:hover {
+    background: #b00710;
+  }
+
+  /* Video items */
+  .video-item {
+    margin-bottom: 40px;
+    max-width: 720px;
+  }
+
+  .video-item h3 {
+    margin-bottom: 12px;
+    font-weight: 600;
+    user-select: none;
+  }
+
+  /* Cronologia */
+  #history-list div {
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    background: #222;
+    transition: background 0.3s;
+  }
+  #history-list div:hover {
+    background-color: #e50914;
+    color: #fff;
+  }
+
+  /* Login */
+  #login-screen {
+    margin: auto;
+    max-width: 320px;
+    background: #222;
+    border-radius: 8px;
+    padding: 30px 25px;
+    text-align: center;
+    color: white;
+  }
+
+  #login-screen input {
+    width: 90%;
+    padding: 12px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+  }
+
+  #login-screen button {
+    padding: 12px 25px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 6px;
+    background: #e50914;
+    color: white;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+  }
+  #login-screen button:hover {
+    background: #b00710;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    body {
+      flex-direction: column;
+      height: auto;
+    }
+
+    #sidebar {
+      width: 100%;
+      height: 60px;
+      flex-direction: row;
+      padding: 0;
+      align-items: center;
+      overflow-x: auto;
+    }
+
+    #sidebar h2 {
+      display: none;
+    }
+
+    .menu-item {
+      flex-grow: 1;
+      justify-content: center;
+      padding: 10px 0;
+      border-left: none;
+      border-bottom: 3px solid transparent;
+      font-size: 0.9rem;
+      gap: 4px;
+    }
+    .menu-item.active {
+      border-bottom: 3px solid #e50914;
+      font-weight: 700;
+    }
+
+    #content {
+      padding: 15px 10px 40px;
+    }
+
+    .video-item {
+      max-width: 100%;
+    }
+  }
+</style>
+
+</head>
+<body>
+
+  <!-- Login -->
+  <div id="login-screen">
+    <h2>Accedi</h2>
+    <input type="text" id="username" placeholder="Nome utente" autocomplete="username" />
+    <input type="password" id="password" placeholder="Password" autocomplete="current-password" />
+    <button onclick="login()">Login</button>
+    <p id="login-error" style="color:#f44336"></p>
+  </div>
+
+  <!-- App principale -->
+  <div id="app" style="display:none; width:100%; height:100%; display:flex;">
+    <nav id="sidebar">
+      <h2>MiniNetflix</h2>
+      <div class="menu-item active" data-section="film"><span class="menu-icon">🎬</span> Film</div>
+      <div class="menu-item" data-section="serie"><span class="menu-icon">📺</span> Serie TV</div>
+      <div class="menu-item" data-section="cronologia"><span class="menu-icon">⏰</span> Cronologia</div>
+    </nav>
+
+    <main id="content">
+      <header>
+        <h1>MiniNetflix</h1>
+        <button onclick="logout()">Esci</button>
+      </header>
+
+      <section id="film-section" class="section-content">
+        <!-- Film verranno inseriti qui dinamicamente -->
+      </section>
+
+      <section id="serie-section" class="section-content" style="display:none;">
+        <!-- Serie TV inserite dinamicamente -->
+      </section>
+
+      <section id="cronologia-section" class="section-content" style="display:none;">
+        <div id="history-list">
+          <!-- Cronologia -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+<!-- Video.js -->
+<script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>
+
+<script>
+  const USERS = {
+    "user1": "password1",
+    "user2": "password2",
+    "user3": "password3",
+    "mario": "ciao123",
+    "anna": "securepass"
+  };
+  let currentUser = null;
+
+  // Dati video dinamici
+  const films = [
+    {
+      title: "Film Esempio 1",
+      src: "https://vjs.zencdn.net/v/oceans.mp4",
+      type: "video/mp4"
+    },
+    {
+      title: "Film Esempio 2",
+      src: "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+      type: "video/mp4"
+    }
+  ];
+
+  const serieTV = [
+    {
+      title: "Ginny e Georgia ST1 E10",
+      src: "https://vjs.zencdn.net/v/oceans.mp4",
+      type: "video/mp4"
+    },
+    {
+      title: "Serie TV Esempio",
+      src: "https://storage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
+      type: "video/mp4"
+    }
+  ];
+
+  // Login
+  function login() {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const errorElem = document.getElementById("login-error");
+
+    if (USERS[username] && USERS[username] === password) {
+      currentUser = username;
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("app").style.display = "flex";
+      errorElem.textContent = "";
+      renderVideos();
+      loadHistory();
+    } else {
+      errorElem.textContent = "Username o password
