@@ -39,9 +39,21 @@ button {
 
 #video-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: 20px;
   padding: 20px;
+}
+
+@media (max-width: 1024px) {
+  #video-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  #video-gallery {
+    grid-template-columns: 1fr;
+  }
 }
 
 .video-item {
@@ -63,39 +75,7 @@ iframe {
   border: none;
 }
 
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.dropbtn {
-  background-color: #e50914;
-  color: white;
-  padding: 10px;
-  font-size: 14px;
-  border: none;
-  cursor: pointer;
-}
-
-.dropdown-content {
-  display: none;
-  position: absolute;
-  background-color: #333;
-  min-width: 200px;
-  z-index: 1;
-}
-
-.dropdown-content a {
-  color: white;
-  padding: 10px;
-  text-decoration: none;
-  display: block;
-}
-
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
+/* Login screen */
 #login-screen {
   text-align: center;
   margin-top: 100px;
