@@ -14,7 +14,6 @@ function login() {
     currentUser = user;
     document.getElementById("login-screen").style.display = "none";
     document.getElementById("main-app").style.display = "block";
-    loadHistory();
     restoreVideoTime();
   } else {
     document.getElementById("login-error").innerText = "Credenziali errate";
@@ -56,22 +55,11 @@ function restoreVideoTime() {
   });
 }
 
-function loadHistory() {
-  const historyList = document.getElementById("history-list");
-  historyList.innerHTML = "";
-
-  document.querySelectorAll("iframe").forEach((iframe) => {
-    const id = iframe.dataset.id;
-    const time = localStorage.getItem(`${currentUser}-${id}-time`);
-    if (time) {
-      const title = iframe.previousElementSibling.textContent;
-      const link = document.createElement("a");
-      link.textContent = `${title} - al minuto ${Math.floor(time)}s`;
-      link.href = "#";
-      link.onclick = () => {
-        iframe.scrollIntoView({ behavior: "smooth" });
-      };
-      historyList.appendChild(link);
-    }
+function filterVideos() {
+  const query = document.getElementById("search-bar").value.toLowerCase();
+  const videos = document.querySelectorAll(".video-item");
+  videos.forEach((video) => {
+    const title = video.querySelector("h3").textContent.toLowerCase();
+    video.style.display = title.includes(query) ? "block" : "none";
   });
 }
