@@ -18,7 +18,15 @@
   <div id="main-app" style="display:none;">
     <header>
       <h1>MiniNetflix</h1>
-      <input type="text" id="search-bar" placeholder="Cerca un video..." oninput="filterVideos()" />
+      <div class="search-container">
+        <input
+          type="text"
+          id="search-bar"
+          placeholder="Cerca un video..."
+          onkeypress="if(event.key === 'Enter') filterVideos()"
+        />
+        <button onclick="filterVideos()">Cerca</button>
+      </div>
       <button onclick="logout()">Esci</button>
     </header>
 
@@ -32,34 +40,34 @@
           data-id="Ginny e Georgia ST1 E10"
         ></iframe>
       </div>
-      
+
       <div class="video-item">
         <h3>Ginny e Georgia ST1 E1</h3>
         <iframe
           src="https://drive.google.com/file/d/12Ew2SflLxJP6C6UuznxfX4ou-1e_1Xcq/preview"
           frameborder="0"
           allowfullscreen
-          data-id="Ginny e Georgia ST1 E10"
+          data-id="Ginny e Georgia ST1 E1"
         ></iframe>
       </div>
-      
+
       <div class="video-item">
-        <h3>Ginny e Georgia ST1 E10</h3>
+        <h3>Ginny e Georgia ST1 E2</h3>
         <iframe
           src="https://drive.google.com/file/d/1axCVYDN7sJjm90pXt1hk3uJOZCIAtvtc/preview"
           frameborder="0"
           allowfullscreen
-          data-id="Ginny e Georgia ST1 E10"
+          data-id="Ginny e Georgia ST1 E2"
         ></iframe>
       </div>
-      
+
       <div class="video-item">
-        <h3>Ginny e Georgia ST1 E10</h3>
+        <h3>Ginny e Georgia ST1 E3</h3>
         <iframe
           src="https://drive.google.com/file/d/1axCVYDN7sJjm90pXt1hk3uJOZCIAtvtc/preview"
           frameborder="0"
           allowfullscreen
-          data-id="Ginny e Georgia ST1 E10"
+          data-id="Ginny e Georgia ST1 E3"
         ></iframe>
       </div>
     </section>
