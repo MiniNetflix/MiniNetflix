@@ -6,25 +6,60 @@ const users = {
 
 let currentUser = null;
 
-// Funzione di login
+// Funzione di login con animazione
 function login() {
   const user = document.getElementById("username").value;
   const pass = document.getElementById("password").value;
 
   if (users[user] && users[user] === pass) {
     currentUser = user;
-    document.getElementById("login-screen").style.display = "none";
-    document.getElementById("main-app").style.display = "block";
-    restoreVideoTime();
+
+    const loginScreen = document.getElementById("login-screen");
+    const mainApp = document.getElementById("main-app");
+
+    // Animazione uscita login
+    loginScreen.style.opacity = '0';
+    loginScreen.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      loginScreen.style.display = "none";
+
+      // Mostra main app con animazione
+      mainApp.style.display = "block";
+      setTimeout(() => {
+        mainApp.classList.add("show");
+      }, 50);
+
+      restoreVideoTime();
+    }, 600);  // deve corrispondere alla durata della transizione in CSS
   } else {
     document.getElementById("login-error").innerText = "Credenziali errate";
   }
 }
 
-// Logout e ricarica pagina
+// Logout con animazione e reload pagina
 function logout() {
+  const loginScreen = document.getElementById("login-screen");
+  const mainApp = document.getElementById("main-app");
+
+  // Animazione uscita main app
+  mainApp.classList.remove("show");
+  setTimeout(() => {
+    mainApp.style.display = "none";
+
+    // Mostra login con animazione
+    loginScreen.style.display = "block";
+    setTimeout(() => {
+      loginScreen.style.opacity = '1';
+      loginScreen.style.transform = 'scale(1)';
+    }, 50);
+
+    // Reset campi e stato
+    document.getElementById("username").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("login-error").innerText = "";
+  }, 600);
+
   currentUser = null;
-  location.reload();
 }
 
 // Salva il tempo del video ogni 3 secondi
@@ -57,3 +92,31 @@ function restoreVideoTime() {
     }
   });
 }
+
+// Funzione di ricerca video per titolo
+function filterVideos() {
+  const query = document.getElementById("search-bar").value.toLowerCase();
+  const videos = document.querySelectorAll(".video-item");
+  videos.forEach((video) => {
+    const title = video.querySelector("h3").textContent.toLowerCase();
+    video.style.display = title.includes(query) ? "block" : "none";
+  });
+}
+
+// --- FUNZIONE PER RESETTARE GLI ALTRI IFRAME GOOGLE DRIVE ---
+const iframes = document.querySelectorAll("iframe");
+
+iframes.forEach((iframe) => {
+  // Assumiamo che il contenitore dell'iframe sia il genitore diretto
+  iframe.parentElement.addEventListener("click", () => {
+    iframes.forEach((otherIframe) => {
+      if (otherIframe !== iframe) {
+        const src = otherIframe.src;
+        otherIframe.src = "";        // Svuota src per fermare il video
+        setTimeout(() => {
+          otherIframe.src = src;     // Ripristina src dopo 100ms
+        }, 100);
+      }
+    });
+  });
+});
