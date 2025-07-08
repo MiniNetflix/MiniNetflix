@@ -57,31 +57,3 @@ function restoreVideoTime() {
     }
   });
 }
-
-// Funzione di ricerca video per titolo
-function filterVideos() {
-  const query = document.getElementById("search-bar").value.toLowerCase();
-  const videos = document.querySelectorAll(".video-item");
-  videos.forEach((video) => {
-    const title = video.querySelector("h3").textContent.toLowerCase();
-    video.style.display = title.includes(query) ? "block" : "none";
-  });
-}
-
-// --- NUOVA FUNZIONE PER RESETTARE GLI ALTRI IFRAME GOOGLE DRIVE ---
-const iframes = document.querySelectorAll("iframe");
-
-iframes.forEach((iframe) => {
-  // Assumiamo che il contenitore dell'iframe sia il genitore diretto
-  iframe.parentElement.addEventListener("click", () => {
-    iframes.forEach((otherIframe) => {
-      if (otherIframe !== iframe) {
-        const src = otherIframe.src;
-        otherIframe.src = "";        // Svuota src per fermare il video
-        setTimeout(() => {
-          otherIframe.src = src;     // Ripristina src dopo 100ms
-        }, 100);
-      }
-    });
-  });
-});
