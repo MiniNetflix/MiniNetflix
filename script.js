@@ -6,6 +6,7 @@ const users = {
 
 let currentUser = null;
 
+// Funzione di login
 function login() {
   const user = document.getElementById("username").value;
   const pass = document.getElementById("password").value;
@@ -20,6 +21,7 @@ function login() {
   }
 }
 
+// Logout e ricarica pagina
 function logout() {
   currentUser = null;
   location.reload();
@@ -34,7 +36,7 @@ setInterval(() => {
   });
 }, 3000);
 
-// Riceve tempo dal player
+// Riceve tempo corrente dal player e lo salva
 window.addEventListener("message", (event) => {
   if (!currentUser || !event.data) return;
   if (event.data.event === "currentTime" && event.data.time) {
@@ -43,6 +45,7 @@ window.addEventListener("message", (event) => {
   }
 });
 
+// Ripristina il tempo salvato nei video
 function restoreVideoTime() {
   document.querySelectorAll("iframe").forEach((iframe) => {
     const id = iframe.dataset.id;
@@ -55,6 +58,7 @@ function restoreVideoTime() {
   });
 }
 
+// Funzione di ricerca video per titolo
 function filterVideos() {
   const query = document.getElementById("search-bar").value.toLowerCase();
   const videos = document.querySelectorAll(".video-item");
