@@ -161,3 +161,10 @@ function filterContent() {
 
   document.getElementById("search-results").style.display = "block";
 }
+// Espone le funzioni al contesto globale
+window.login = login;
+window.logout = logout;
+window.toggleView = toggleView;
+window.filterContent = filterContent;
+window.backToHome = backToHome;
+window.showAll = showAll;
