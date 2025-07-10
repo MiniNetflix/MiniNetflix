@@ -491,13 +491,23 @@ function toggleView(type) {
 
   if (type === 'movies') {
     contentView.innerHTML = '<h2>Film</h2>';
-    for (let movie of Object.entries(seriesData).filter(([k, v]) => !v.seasons)) {
-      contentView.innerHTML += `<div>${movie[0]}</div>`;
+    for (let [title, movie] of Object.entries(moviesData)) {
+      contentView.innerHTML += `
+        <div>
+          <p>${title}</p>
+          <iframe src="${movie.src}" width="560" height="315" allowfullscreen></iframe>
+        </div>
+      `;
     }
   } else if (type === 'series') {
     contentView.innerHTML = '<h2>Serie TV</h2>';
-    for (let series of Object.entries(seriesData).filter(([k, v]) => v.seasons)) {
-      contentView.innerHTML += `<div>${series[0]}</div>`;
+    for (let [title, serie] of Object.entries(seriesData)) {
+      contentView.innerHTML += `
+        <div>
+          <p>${title}</p>
+          <img src="${serie.img}" width="200" />
+        </div>
+      `;
     }
   } else if (type === 'continue') {
     contentView.innerHTML = '<h2>Continua a guardare</h2>';
@@ -515,13 +525,27 @@ function toggleView(type) {
     }
   }
 }
+function showMovie(movieName) {
+  hideAllViews();
+  document.getElementById("episode-title").textContent = movieName;
+  const container = document.getElementById("episodes-container");
+  container.innerHTML = "";
 
-// Salva il progresso del video
-function saveWatchProgress(title, src, videoElement) {
-  videoElement.addEventListener('timeupdate', () => {
-    localStorage.setItem(
-      'lastWatched',
-      JSON.stringify({ title, src, time: Math.floor(videoElement.currentTime) })
-    );
-  });
+  const movie = moviesData[movieName];
+  const iframe = document.createElement("iframe");
+  iframe.src = movie.src;
+  iframe.allowFullscreen = true;
+  iframe.frameBorder = "0";
+  iframe.width = "560";
+  iframe.height = "315";
+  container.appendChild(iframe);
+
+  // Salva l'ultima visualizzazione (senza tempo)
+  localStorage.setItem('lastWatched', JSON.stringify({
+    title: movieName,
+    src: movie.src,
+    time: 0
+  }));
+
+  document.getElementById("episode-list").style.display = "block";
 }
