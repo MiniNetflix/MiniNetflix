@@ -65,3 +65,7 @@ function showEpisodes(seriesName, seasonNum) {
 
   document.getElementById("episode-list").style.display = "block";
 }
+// media.js
+window.showMovie = showMovie;
+window.showSeasons = showSeasons;
+window.showEpisodes = showEpisodes;
