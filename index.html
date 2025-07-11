@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>MiniNetflix</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
 
   <div id="login-screen">
@@ -18,27 +20,27 @@
 
   <div id="main-app" style="display:none;">
     <header>
-      MiniNetflix
+      <div class="header-content">
+        <span class="hamburger" onclick="toggleMenu()">☰</span>
+        MiniNetflix
+      </div>
       <div id="search-container">
-        <input
-          type="text"
-          id="search-bar"
-          placeholder="Cerca film o serie TV..."
-          onkeypress="if(event.key==='Enter') filterContent()"
-        />
+        <input type="text" id="search-bar" placeholder="Cerca film o serie TV..."
+          onkeypress="if(event.key==='Enter') filterContent()" />
         <button onclick="filterContent()">Cerca</button>
         <button onclick="logout()" class="logout-btn">Esci</button>
       </div>
     </header>
-<div id="side-menu">
-  <button onclick="toggleView('movies')">Film</button>
-  <button onclick="toggleView('series')">Serie TV</button>
-  <button onclick="toggleView('continue')">Continua a guardare</button>
-</div>
+    <div id="side-menu">
+      <span class="close-btn" onclick="toggleMenu()">×</span>
+      <button onclick="toggleView('movies')">Film</button>
+      <button onclick="toggleView('series')">Serie TV</button>
+      <button onclick="toggleView('continue')">Continua a guardare</button>
+    </div>
 
-<div id="content-view" class="view">
-  <!-- Qui verranno caricati dinamicamente film/serie/continua -->
-</div>
+    <div id="content-view" class="view">
+      <!-- Qui verranno caricati dinamicamente film/serie/continua -->
+    </div>
 
     <div id="home-view" class="view">
       <section id="series-section">
@@ -74,7 +76,14 @@
   </div>
 
   <script src="data.js"></script>
-<script src="media.js"></script>
-<script src="main.js"></script>
+  <script src="media.js"></script>
+  <script src="main.js"></script>
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('side-menu');
+      menu.classList.toggle('open');
+    }
+  </script>
 </body>
+
 </html>
